@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "istream": "cpp",
+        "iostream": "cpp",
+        "*.tcc": "cpp",
+        "stdexcept": "cpp",
+        "cmath": "cpp"
+    }
+}
