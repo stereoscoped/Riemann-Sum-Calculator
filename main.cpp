@@ -1,23 +1,27 @@
 /* TO DO
 // 1) Fix the pemdas <-- I have no idea how to do bc it was chatgpt
-// 4) simpsons and trapezoidal rule
 // 5) allow ln and e
 // 1.0 Complete!
 */
 #include "expressions.h"
 #include "expressions.cpp"
-double calcResults(double upper_bound, double lower_bound, double n, string expression, char choice);
+
+void welcome();
+double calcResults(double upper_bound, double lower_bound, int n, string expression, char choice);
 
 int main() {
 
     char choice = 'Y';
+    welcome();
     while (toupper(choice) == 'Y') {
         try {
             string expression;
             cout << "Enter a mathematical expression (use 'x' as a variable): ";
             getline(cin, expression);
 
-            double lower_bound, upper_bound, n, change;
+            double lower_bound, upper_bound, change;
+            int n;
+
             cin.clear();
 
             cout << "Enter lower bound, upper bound, and number of subdivisions: ";
@@ -56,7 +60,13 @@ int main() {
     return 0;
 }
 
-double calcResults(double upper_bound, double lower_bound, double n, string expression, char choice) {
+void welcome() {
+    cout << "Welcome to the Riemann Sum Calculator 0.2!" << endl;
+    cout << "If you find any bugs, please report it to https://github.com/stereoscoped/Riemann-Sum-Calculator\n" << endl;
+    cout << fixed << setprecision(6);
+}
+
+double calcResults(double upper_bound, double lower_bound, int n, string expression, char choice) {
     double x = lower_bound, area = 0, change = (upper_bound - lower_bound) / n;
     if (choice == 'R') {
         for (double i = 0; i < n; ++i) {
@@ -77,20 +87,28 @@ double calcResults(double upper_bound, double lower_bound, double n, string expr
             area += parseExpression(expression, pos, x) * change;
             x += change;
         }
-    } /*else if (choice == 'S') {
-        if (static_cast<int>(n)%2 != 0) {
-            ++change;
-            cout << "Simpson's Rule requires an even number of subdivisions!" << endl;
-            cout << "Subdivisions set to " << static_cast<int>(n) + 1 << endl;
-            change = (upper_bound - lower_bound) / (static_cast<int>(n) + 1);
+    } else if (choice == 'S') {
+        if (n%2 != 0) {
+            ++n;
+            cout << "\n(Subdivisions set to " << n << " due to the requirement of even subdivisions)" << endl;
+            change = (upper_bound - lower_bound) / n;
         }
-        for (double i = 0; i < n; ++i) {
+        for (int i = 0; i <= n; ++i) {
             size_t pos = 0;
-            area += parseExpression(expression, pos, x);
+            int factor = (i == 0 || i == n) ? 1 : (i % 2 != 0 ? 4 : 2);
+            area += parseExpression(expression, pos, x) * factor;
             x += change;
         }
         area = (area * change)/3;
-    }*/
+    } else if (choice == 'T') {
+        for (int i = 0; i <= n; ++i) {
+            size_t pos = 0;
+            int factor = (i == 0 || i == n) ? 1 : 2;
+            area += parseExpression(expression, pos, x) * factor;
+            x += change;
+        }
+        area = (area * change)/2;
+    }
 
     return area;
 }
