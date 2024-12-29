@@ -6,6 +6,7 @@
 #include "expressions.h"
 #include "expressions.cpp"
 
+// Function prototypes
 void welcome();
 double calcResults(double upper_bound, double lower_bound, int n, string expression, char choice);
 
@@ -60,12 +61,14 @@ int main() {
     return 0;
 }
 
+// Displays welcome on initial startup
 void welcome() {
     cout << "Welcome to the Riemann Sum Calculator 0.2!" << endl;
     cout << "If you find any bugs, please report it to https://github.com/stereoscoped/Riemann-Sum-Calculator\n" << endl;
     cout << fixed << setprecision(6);
 }
 
+// Calculates Riemann Sum based on choice
 double calcResults(double upper_bound, double lower_bound, int n, string expression, char choice) {
     double x = lower_bound, area = 0, change = (upper_bound - lower_bound) / n;
     if (choice == 'R') {
